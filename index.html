@@ -1,0 +1,38 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Pixel Editor</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="w3-display-container">
+        <canvas id="mainCanvas" class="w3-card-4 w3-display-middle"></canvas>
+    </div>
+
+    <div class="w3-container w3-bottom w3-card-8 w3-white" id="menu">
+        <input type="file" onchange="loadFile()" id="fileInput">
+        <a href="#" id="downloadLink" onclick="downloadImage()">Download</a>
+        <a href="#" onclick="grayscale()">Greyscale</a>
+    </div>
+</body>
+    <script src="setup.js"></script>
+    <script src="fileOperations.js"></script>
+    <script>
+        function grayscale()
+        {
+            for (var i=0; i<data.length; i+=4) 
+            {
+                var r = data[i];
+                var g = data[i+1];
+                var b = data[i+2];
+                var v = 0.2126*r + 0.7152*g + 0.0722*b;
+                data[i] = data[i+1] = data[i+2] = v
+            }
+            gc.putImageData(imageData, 0, 0);
+        }
+    </script>
+</html> 
