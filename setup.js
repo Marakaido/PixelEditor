@@ -5,7 +5,11 @@ var Application = {
     data: null,
     fileName: "test.png",
     activeTool: null,
-    zoom: 1,
+    zoom: {x: 1, y: 1},
+    values: {
+        lineWidth: 30,
+        color: "#000000",
+    },
 
     init: function()
     {
@@ -13,6 +17,7 @@ var Application = {
         this.initContext();
         this.imageData = this.gc.getImageData(0, 0, this.canvas.width, this.canvas.height);
         this.data = this.imageData.data;
+        this.calculateZoom();
     },
 
     initCanvas: function(width, height)
@@ -34,13 +39,16 @@ var Application = {
         this.centerCanvas();
     },
 
+    calculateZoom: function()
+    {
+        this.zoom.x = this.canvas.width / this.canvas.offsetWidth;
+        this.zoom.y = this.canvas.height / this.canvas.offsetHeight;
+    },
+
     initContext: function()
     {
         //this.gc.imageSmoothingEnabled = false;
         this.gc = this.canvas.getContext('2d');
-        this.gc.lineJoin = 'round';
-        this.gc.lineCap = 'round';
-        this.gc.lineWidth = 10;
     },
 
     centerCanvas: function()

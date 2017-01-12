@@ -7,8 +7,8 @@ function activateTool(tool)
 function getPixelCoordinates(x, y)
 {
     return {
-        x: (x - Application.canvas.offsetLeft) * Application.zoom,
-        y: (y - Application.canvas.offsetTop) * Application.zoom
+        x: (x - Application.canvas.offsetLeft) * Application.zoom.x,
+        y: (y - Application.canvas.offsetTop) * Application.zoom.y
     };
 }
 
@@ -17,6 +17,7 @@ var Pencil = {
 
     activate: function()
     {
+        this.configureContext();
         Application.canvas.onmousedown = function(event)
         {
             var point = getPixelCoordinates(event.clientX, event.clientY);
@@ -41,5 +42,13 @@ var Pencil = {
     {
         Application.gc.lineTo(coords.x, coords.y);
         Application.gc.stroke();
+    },
+
+    configureContext: function()
+    {
+        Application.gc.lineJoin = 'round';
+        Application.gc.lineCap = 'round';
+        Application.gc.lineWidth = Application.values.lineWidth;
+        Application.gc.strokeStyle = Application.values.color;
     }
 };

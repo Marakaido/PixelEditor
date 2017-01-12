@@ -11,6 +11,7 @@ function loadFile()
 
             Application.imageData = Application.gc.getImageData(0,0,Application.canvas.width, Application.canvas.height);
             Application.data = Application.imageData.data;
+            Application.calculateZoom();
         }
         img.src = event.target.result;
     }
