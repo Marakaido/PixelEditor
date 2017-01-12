@@ -6,33 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-blue.css"> 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header class="w3-container w3-top w3-card-8 w3-theme" id="menu">
+        <i class="material-icons w3-xxlarge">menu</i>
+    </header>
+
     <div class="w3-display-container">
-        <canvas id="mainCanvas" class="w3-card-4 w3-display-middle"></canvas>
+        <canvas id="mainCanvas" width="800" height="600"></canvas>
     </div>
 
-    <div class="w3-container w3-bottom w3-card-8 w3-white" id="menu">
+    <footer class="w3-container w3-bottom w3-card-8 w3-white">
         <input type="file" onchange="loadFile()" id="fileInput">
-        <a href="#" id="downloadLink" onclick="downloadImage()">Download</a>
-        <a href="#" onclick="grayscale()">Greyscale</a>
-    </div>
+        <a id="downloadLink" onclick="downloadImage()">Download</a>
+        <button onclick="grayscale()">Greyscale</button>
+        <button onclick="pensil()">Pensil</button>
+    </footer>
 </body>
     <script src="setup.js"></script>
     <script src="fileOperations.js"></script>
+    <script src="tools.js"></script>
     <script>
         function grayscale()
         {
+            Application.imageData = Application.gc.getImageData(0,0,Application.canvas.width, Application.canvas.height);
+            Application.data = Application.imageData.data;
             for (var i=0; i<data.length; i+=4) 
             {
-                var r = data[i];
-                var g = data[i+1];
-                var b = data[i+2];
+                var r = Application.data[i];
+                var g = Application.data[i+1];
+                var b = Application.data[i+2];
                 var v = 0.2126*r + 0.7152*g + 0.0722*b;
-                data[i] = data[i+1] = data[i+2] = v
+                Application.data[i] = Application.data[i+1] = Application.data[i+2] = v;
             }
-            gc.putImageData(imageData, 0, 0);
+            Application.gc.putImageData(Application.imageData, 0, 0);
         }
     </script>
 </html> 

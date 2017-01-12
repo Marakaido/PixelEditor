@@ -5,12 +5,12 @@ function loadFile()
     {
         var img = new Image();
         img.onload = function(){
-            canvas.width = img.width;
-            canvas.height = img.height;
-            gc.drawImage(img,0,0);
+            Application.canvas.width = img.width;
+            Application.canvas.height = img.height;
+            Application.gc.drawImage(img,0,0);
 
-            imageData = gc.getImageData(0,0,canvas.width, canvas.height);
-            data = imageData.data;
+            Application.imageData = Application.gc.getImageData(0,0,Application.canvas.width, Application.canvas.height);
+            Application.data = Application.imageData.data;
         }
         img.src = event.target.result;
     }
@@ -21,6 +21,6 @@ function loadFile()
 function downloadImage()
 {
     var link = document.getElementById("downloadLink");
-    link.href = canvas.toDataURL("image/png");
-    link.download = fileName;
+    link.href = Application.canvas.toDataURL("image/png");
+    link.download = Application.fileName;
 }
