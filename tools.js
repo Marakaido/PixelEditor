@@ -1,6 +1,6 @@
 function activateTool(tool)
 {
-    Pencil.activate();
+    tool.activate();
     Application.activeTool = tool;
 }
 
@@ -50,5 +50,44 @@ var Pencil = {
         Application.gc.lineCap = 'round';
         Application.gc.lineWidth = Application.values.lineWidth;
         Application.gc.strokeStyle = Application.values.color;
+    }
+};
+
+var Eraser = {
+    activate: function()
+    {
+        this.configureContext();
+        Application.canvas.onmousedown = function(event)
+        {
+            var point = getPixelCoordinates(event.clientX, event.clientY);
+            Application.gc.beginPath();
+            Application.gc.moveTo(point.x, point.y);
+            Application.canvas.onmousemove = function(event)
+            {
+                var point = getPixelCoordinates(event.clientX, event.clientY);
+                Pencil.draw(point);
+                Pencil.previousPoint = point;
+            }
+            Application.canvas.onmouseup = function(event)
+            {
+                Application.gc.closePath();
+                Application.canvas.onmousemove = null;
+                Application.gc.globalCompositeOperation = 'source-over';
+            }
+        }
+    },
+
+    draw: function(coords)
+    {
+        Application.gc.lineTo(coords.x, coords.y);
+        Application.gc.stroke();
+    },
+
+    configureContext: function()
+    {
+        Application.gc.globalCompositeOperation = 'destination-out';
+        Application.gc.lineJoin = 'round';
+        Application.gc.lineCap = 'round';
+        Application.gc.lineWidth = Application.values.lineWidth;
     }
 };
