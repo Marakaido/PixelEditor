@@ -4,10 +4,13 @@ var Application = {
     imageData: null,
     data: null,
     fileName: "test.png",
+    activeTool: null,
+    zoom: 1,
 
     init: function()
     {
         this.initCanvas();
+        this.initContext();
         this.imageData = this.gc.getImageData(0, 0, this.canvas.width, this.canvas.height);
         this.data = this.imageData.data;
     },
@@ -15,8 +18,6 @@ var Application = {
     initCanvas: function(width, height)
     {
         this.canvas = document.getElementById("mainCanvas");
-        this.gc = this.canvas.getContext('2d');
-        this.gc.imageSmoothingEnabled = false;
 
         if(width == null || height == null)
         {
@@ -31,6 +32,15 @@ var Application = {
         this.canvas.height = height;
 
         this.centerCanvas();
+    },
+
+    initContext: function()
+    {
+        //this.gc.imageSmoothingEnabled = false;
+        this.gc = this.canvas.getContext('2d');
+        this.gc.lineJoin = 'round';
+        this.gc.lineCap = 'round';
+        this.gc.lineWidth = 10;
     },
 
     centerCanvas: function()

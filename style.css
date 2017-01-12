@@ -16,6 +16,32 @@ html body
     width: 800px;
 }
 
+.tool-menu
+{
+    height: 50px;
+    width: 100%;
+
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+
+    background-color: white;
+}
+
+.toolButton
+{
+    display:inline-block;
+    width: 50px;
+}
+
+#toolMenuButton
+{
+    height: 50px;
+    width: 50px;
+    background-color: red;
+    float:left;
+}
+
 header, footer
 {
     height: 5%;

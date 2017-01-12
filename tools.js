@@ -1,27 +1,45 @@
-function pensil()
+function activateTool(tool)
 {
-    Application.canvas.onmousedown = function(event)
+    Pencil.activate();
+    Application.activeTool = tool;
+}
+
+function getPixelCoordinates(x, y)
+{
+    return {
+        x: (x - Application.canvas.offsetLeft) * Application.zoom,
+        y: (y - Application.canvas.offsetTop) * Application.zoom
+    };
+}
+
+var Pencil = {
+    previousPoint: null, 
+
+    activate: function()
     {
-        var x = event.clientX - event.currentTarget.offsetLeft;
-        var y = event.clientY - event.currentTarget.offsetTop;
+        Application.canvas.onmousedown = function(event)
+        {
+            var point = getPixelCoordinates(event.clientX, event.clientY);
+            Application.gc.beginPath();
+            Application.gc.moveTo(point.x, point.y);
+            Application.canvas.onmousemove = function(event)
+            {
+                var point = getPixelCoordinates(event.clientX, event.clientY);
+                Pencil.draw(point);
+                Pencil.previousPoint = point;
+            }
+            Application.canvas.onmouseup = function(event)
+            {
+                Application.gc.closePath();
+                Application.canvas.onmousemove = null;
+                Pencil.previousPoint = null;
+            }
+        }
+    },
 
-        pencilDraw(x, y);
-        Application.canvas.onmousemove = function(event)
-        {
-            x = event.clientX - event.currentTarget.offsetLeft;
-            y = event.clientY - event.currentTarget.offsetTop;
-            pencilDraw(x, y);
-        }
-        Application.canvas.onmouseup = function(event)
-        {
-            Application.canvas.onmousemove = null;
-        }
+    draw: function(coords)
+    {
+        Application.gc.lineTo(coords.x, coords.y);
+        Application.gc.stroke();
     }
-}
-
-function pencilDraw(x, y)
-{
-    Application.gc.beginPath();
-    Application.gc.arc(x,y,2,0,2*Math.PI);
-    Application.gc.fill();
-}
+};

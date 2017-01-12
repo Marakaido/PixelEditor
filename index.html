@@ -19,16 +19,40 @@
         <canvas id="mainCanvas" width="800" height="600"></canvas>
     </div>
 
-    <footer class="w3-container w3-bottom w3-card-8 w3-white">
+    <footer class="tool-menu">
+        <div id="toolMenuButton" onclick="document.getElementById('toolMenu').style.display='block'"></div>
         <input type="file" onchange="loadFile()" id="fileInput">
         <a id="downloadLink" onclick="downloadImage()">Download</a>
         <button onclick="grayscale()">Greyscale</button>
-        <button onclick="pensil()">Pensil</button>
     </footer>
+
+    <div id="toolMenu" class="w3-modal">
+        <div class="w3-modal-content w3-card-8">
+            <header class="w3-container w3-blue">
+                <span onclick="document.getElementById('toolMenu').style.display='none'" class="w3-closebtn">&times;</span>
+                <h2>Modal Header</h2>
+            </header>
+
+            <div class="w3-container">
+                <div class="toolButton" onclick="activateTool(Pencil)">
+                    <img src="Icons/pencil.png" alt="pencil tool">
+                </div>
+                <div class="toolButton" onclick="activateTool('eraser')">
+                    <img src="Icons/Erase-50.png" alt="Eraser tool">
+                </div>
+                <div class="toolButton" onclick="activateTool('colorPicker')">
+                    <img src="Icons/Color_picker.png" alt="Color picker tool">
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</div>
 </body>
     <script src="setup.js"></script>
     <script src="fileOperations.js"></script>
     <script src="tools.js"></script>
+    <script src="gui.js"></script>
     <script>
         function grayscale()
         {
