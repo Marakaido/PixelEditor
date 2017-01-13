@@ -5,8 +5,7 @@ function loadFile()
     {
         var img = new Image();
         img.onload = function(){
-            Application.canvas.width = img.width;
-            Application.canvas.height = img.height;
+            Application.initCanvas(img.width, img.height);
             Application.gc.drawImage(img,0,0);
 
             Application.imageData = Application.gc.getImageData(0,0,Application.canvas.width, Application.canvas.height);

@@ -14,13 +14,10 @@
     <header class="w3-container w3-top w3-card-8 w3-theme" id="menu">
         <i class="material-icons w3-xxlarge">menu</i>
     </header>
-
-    <div class="w3-display-container">
-        <canvas id="mainCanvas" width="800" height="600"></canvas>
-    </div>
+    <canvas id="mainCanvas" width="800" height="600"></canvas>
 
     <footer class="tool-menu">
-        <div id="toolMenuButton" onclick="document.getElementById('toolMenu').style.display='block'"></div>
+        <div id="toolMenuButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
         <input type="file" onchange="loadFile()" id="fileInput">
         <a id="downloadLink" onclick="downloadImage()">Download</a>
         <button onclick="grayscale()">Greyscale</button>
@@ -34,14 +31,17 @@
             </header>
 
             <div class="w3-container">
-                <div class="toolButton" onclick="activateTool(Pencil)">
+                <div class="toolButton" onclick="GUI.toolButtonClicked(Pencil)">
                     <img src="Icons/pencil.png" alt="pencil tool">
                 </div>
-                <div class="toolButton" onclick="activateTool(Eraser)">
+                <div class="toolButton" onclick="GUI.toolButtonClicked(Eraser)">
                     <img src="Icons/Erase-50.png" alt="Eraser tool">
                 </div>
-                <div class="toolButton" onclick="activateTool('colorPicker')">
+                <div class="toolButton" onclick="GUI.toolButtonClicked(ColorPicker)">
                     <img src="Icons/Color_picker.png" alt="Color picker tool">
+                </div>
+                <div class="toolButton" onclick="GUI.toolButtonClicked(Hand)">
+                    <img src="Icons/Hand.png" alt="Hand tool">
                 </div>
             </div>
         </div>

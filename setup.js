@@ -35,8 +35,30 @@ var Application = {
         
         this.canvas.width = width;
         this.canvas.height = height;
-
+        this.scaleCanvas();
         this.centerCanvas();
+    },
+
+    scaleCanvas: function()
+    {
+        var maxHeight = Math.round(0.8 * window.innerHeight);
+        var maxWidth = Math.round(0.8 * window.innerWidth);
+        var factor = 1;
+        var width = maxWidth;
+        var height = maxHeight;
+        if(this.canvas.width < this.canvas.height)
+        {
+            factor = maxWidth / this.canvas.offsetWidth;
+            height = this.canvas.offsetHeight * factor;
+        }
+        else
+        {
+            factor = maxHeight / this.canvas.offsetHeight;
+            width = this.canvas.offsetWidth * factor;
+        }
+
+        this.canvas.style.width = width + 'px';
+        this.canvas.style.height = height + 'px';
     },
 
     calculateZoom: function()
@@ -55,6 +77,13 @@ var Application = {
     {
         this.canvas.style.left = window.innerWidth / 2 - this.canvas.offsetWidth / 2 + 'px';
         this.canvas.style.top = window.innerHeight / 2 - this.canvas.offsetHeight / 2 + 'px';
+    },
+
+    activateTool: function(tool)
+    {
+        this.tool && this.tool.deactivate();
+        this.tool = tool;
+        this.tool.activate();
     }
 };
 
