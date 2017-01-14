@@ -7,7 +7,7 @@ html body
 
 #mainCanvas
 {
-    background-color: white;
+    background-image: url('Icons/background.png');
     position: fixed;
     top: 50%;
     left: 50%;
