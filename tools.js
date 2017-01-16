@@ -134,3 +134,41 @@ var Hand = {
         Application.canvas.onmousedown = null;
     },
 };
+
+var Zoom = {
+    icon: "Search.png",
+    modifier: 0.1,
+    
+    activate: function()
+    {
+        Application.canvas.onclick = function(event)
+        {
+            Zoom.zoom(event.clientX, event.clientY, Zoom.modifier);
+        }
+        Application.canvas.oncontextmenu = function(event)
+        {
+            event.preventDefault();
+            event.stopPropagation();
+            Zoom.zoom(event.clientX, event.clientY, -Zoom.modifier);
+        }
+    },
+
+    deactivate: function()
+    {
+        Application.canvas.onclick = null;
+        Application.canvas.oncontextmenu = null;
+    },
+
+    zoom: function(x, y, modifier)
+    {
+        var width = Application.canvas.offsetWidth;
+        var height = Application.canvas.offsetHeight;
+        var left = Application.canvas.offsetLeft;
+        var top = Application.canvas.offsetTop;
+        Application.canvas.style.width = width + width * modifier + 'px';
+        Application.canvas.style.height = height + height * modifier + 'px';
+        Application.canvas.style.left = left - x * modifier + 'px';
+        Application.canvas.style.top = top - y * modifier + 'px';
+        Application.calculateZoom();
+    }
+};

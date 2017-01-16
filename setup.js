@@ -69,8 +69,12 @@ var Application = {
 
     initContext: function()
     {
-        //this.gc.imageSmoothingEnabled = false;
         this.gc = this.canvas.getContext('2d');
+        this.gc.imageSmoothingEnabled = false;
+        this.gc.mozImageSmoothingEnabled    = false;
+        this.gc.oImageSmoothingEnabled      = false;
+        this.gc.webkitImageSmoothingEnabled = false;
+        this.gc.msImageSmoothingEnabled     = false;
     },
 
     centerCanvas: function()
