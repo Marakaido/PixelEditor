@@ -70,11 +70,11 @@ var Application = {
     initContext: function()
     {
         this.gc = this.canvas.getContext('2d');
-        this.gc.imageSmoothingEnabled = false;
         this.gc.mozImageSmoothingEnabled    = false;
         this.gc.oImageSmoothingEnabled      = false;
         this.gc.webkitImageSmoothingEnabled = false;
         this.gc.msImageSmoothingEnabled     = false;
+        this.gc.imageSmoothingEnabled = false;
     },
 
     centerCanvas: function()
@@ -88,6 +88,45 @@ var Application = {
         this.tool && this.tool.deactivate();
         this.tool = tool;
         this.tool.activate();
+    },
+
+    getFullImageData: function()
+    {
+        return this.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    },
+    getImageData: function(x, y, width, height)
+    {
+        var imageData = this.gc.getImageData(x, y, width, height);
+        return {
+            imageData: imageData,
+            data: imageData.data,
+            getPixel: function(i, j)
+            {
+                if(i < 0 || j < 0 || i >= imageData.width || j >= imageData.height) return null;
+                var redPos = j * imageData.width * 4 + i*4;
+                return {
+                    red: this.data[redPos],
+                    green: this.data[redPos+1],
+                    blue: this.data[redPos+2],
+                    alpha: this.data[redPos+3],
+                    equals: function(color)
+                    {
+                        return  this.red == color.red &&
+                                this.green == color.green &&
+                                this.blue == color.blue &&
+                                this.alpha == color.alpha;
+                    }
+                };
+            },
+            setPixel: function(i, j, color)
+            {
+                var redPos = j * imageData.width * 4 + i*4;
+                this.data[redPos] = color.red;
+                this.data[redPos+1] = color.green;
+                this.data[redPos+2] = color.blue;
+                this.data[redPos+3] = color.alpha;
+            }
+        };
     }
 };
 

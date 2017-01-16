@@ -1,8 +1,8 @@
 function getPixelCoordinates(x, y)
 {
     return {
-        x: Math.round((x - Application.canvas.offsetLeft) * Application.zoom.x),
-        y: Math.round((y - Application.canvas.offsetTop) * Application.zoom.y)
+        x: Math.floor((x - Application.canvas.offsetLeft) * Application.zoom.x),
+        y: Math.floor((y - Application.canvas.offsetTop) * Application.zoom.y)
     };
 }
 
@@ -171,4 +171,54 @@ var Zoom = {
         Application.canvas.style.top = top - y * modifier + 'px';
         Application.calculateZoom();
     }
+};
+
+var PaintBucket = {
+    icon: "PaintBucket.png",
+    
+    activate: function()
+    {
+        Application.canvas.onclick = function(event)
+        {
+            var imageData = Application.getFullImageData();
+            var point = getPixelCoordinates(event.clientX, event.clientY);
+            var targetPixel = imageData.getPixel(point.x, point.y);
+            var color = {red: 255, green: 255, blue: 255, alpha: 255};
+            var points = [point];
+            while(points.length != 0)
+            {
+                point = points.pop();
+                var topPixel = imageData.getPixel(point.x, point.y-1);
+                var bottomPixel = imageData.getPixel(point.x, point.y+1);
+                var leftPixel = imageData.getPixel(point.x-1, point.y);
+                var rightPixel = imageData.getPixel(point.x+1, point.y);
+                if(topPixel && topPixel.equals(targetPixel))
+                {
+                    imageData.setPixel(point.x, point.y-1, color);
+                    points.push({x: point.x, y: point.y-1});
+                }
+                if(bottomPixel && bottomPixel.equals(targetPixel))
+                {
+                    imageData.setPixel(point.x, point.y+1, color);
+                    points.push({x: point.x, y: point.y+1});
+                }
+                if(leftPixel && leftPixel.equals(targetPixel))
+                {
+                    imageData.setPixel(point.x-1, point.y, color);
+                    points.push({x: point.x-1, y: point.y});
+                }
+                if(rightPixel && rightPixel.equals(targetPixel))
+                {
+                    imageData.setPixel(point.x+1, point.y, color);
+                    points.push({x: point.x+1, y: point.y});
+                }
+            }
+            Application.gc.putImageData(imageData.imageData, 0, 0);
+        }
+    },
+
+    deactivate: function()
+    {
+        Application.canvas.onclick = null;
+    },
 };
