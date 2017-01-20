@@ -3,6 +3,10 @@ var Application = {
     gc: null, //Graphics context
     imageData: null,
     data: null,
+    selection: {
+        canvas: null,
+        gc: null
+    },
     fileName: "test.png",
     activeTool: null,
     zoom: {x: 1, y: 1},
@@ -14,7 +18,9 @@ var Application = {
     init: function()
     {
         this.initCanvas();
+        this.updateSelectionCanvas();
         this.initContext();
+        this.initSelectionContext();
         this.imageData = this.gc.getImageData(0, 0, this.canvas.width, this.canvas.height);
         this.data = this.imageData.data;
         this.calculateZoom();
@@ -37,6 +43,13 @@ var Application = {
         this.canvas.height = height;
         this.scaleCanvas();
         this.centerCanvas();
+    },
+
+    updateSelectionCanvas: function()
+    {
+        this.selection.canvas = document.getElementById("selectionCanvas");
+        this.selection.canvas.width = this.canvas.width;
+        this.selection.canvas.height = this.canvas.height;
     },
 
     scaleCanvas: function()
@@ -70,11 +83,11 @@ var Application = {
     initContext: function()
     {
         this.gc = this.canvas.getContext('2d');
-        this.gc.mozImageSmoothingEnabled    = false;
-        this.gc.oImageSmoothingEnabled      = false;
-        this.gc.webkitImageSmoothingEnabled = false;
-        this.gc.msImageSmoothingEnabled     = false;
-        this.gc.imageSmoothingEnabled = false;
+    },
+    
+    initSelectionContext: function()
+    {
+        this.selection.gc = this.selection.canvas.getContext('2d');
     },
 
     centerCanvas: function()
@@ -94,6 +107,7 @@ var Application = {
     {
         return this.getImageData(0, 0, this.canvas.width, this.canvas.height);
     },
+
     getImageData: function(x, y, width, height)
     {
         var imageData = this.gc.getImageData(x, y, width, height);

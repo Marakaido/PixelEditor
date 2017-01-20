@@ -16,6 +16,11 @@ html body
     width: 800px;
 }
 
+#selectionCanvas
+{
+    display: none;
+}
+
 .tool-menu
 {
     height: 50px;
