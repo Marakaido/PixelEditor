@@ -6,37 +6,40 @@ function getPixelCoordinates(x, y)
     };
 }
 
+function brushStroke()
+{
+    Application.canvas.onmousedown = function(event)
+    {
+        var point = getPixelCoordinates(event.clientX, event.clientY);
+        Application.gc.beginPath();
+        Application.gc.arc(point.x, point.y, Application.values.lineWidth/2, 0, 2*Math.PI);
+        Application.gc.fill();
+        Application.gc.beginPath();
+        Application.gc.moveTo(point.x, point.y);
+        Application.canvas.onmousemove = function(event)
+        {
+            var coords = getPixelCoordinates(event.clientX, event.clientY);
+            Application.gc.lineTo(coords.x, coords.y);
+            Application.gc.stroke();
+        }
+        Application.canvas.onmouseup = function(event)
+        {
+            Application.gc.closePath();
+            Application.canvas.onmousemove = null;
+        }
+    }
+}
+
 var Pencil = {
     icon: "pencil.png",
 
     activate: function()
     {
         this.configureContext();
-        Application.canvas.onmousedown = function(event)
-        {
-            var point = getPixelCoordinates(event.clientX, event.clientY);
-            Application.gc.beginPath();
-            Application.gc.moveTo(point.x, point.y);
-            Application.canvas.onmousemove = function(event)
-            {
-                var point = getPixelCoordinates(event.clientX, event.clientY);
-                Pencil.draw(point);
-            }
-            Application.canvas.onmouseup = function(event)
-            {
-                Application.gc.closePath();
-                Application.canvas.onmousemove = null;
-            }
-        }
+        brushStroke();
     },
 
     deactivate: function(){},
-
-    draw: function(coords)
-    {
-        Application.gc.lineTo(coords.x, coords.y);
-        Application.gc.stroke();
-    },
 
     configureContext: function()
     {
@@ -53,33 +56,12 @@ var Eraser = {
     activate: function()
     {
         this.configureContext();
-        Application.canvas.onmousedown = function(event)
-        {
-            var point = getPixelCoordinates(event.clientX, event.clientY);
-            Application.gc.beginPath();
-            Application.gc.moveTo(point.x, point.y);
-            Application.canvas.onmousemove = function(event)
-            {
-                var point = getPixelCoordinates(event.clientX, event.clientY);
-                Pencil.draw(point);
-                Pencil.previousPoint = point;
-            }
-            Application.canvas.onmouseup = function(event)
-            {
-                Application.gc.closePath();
-                Application.canvas.onmousemove = null;
-            }
-        }
+        brushStroke();
     },
+
     deactivate: function()
     {
         Application.gc.globalCompositeOperation = 'source-over';
-    },
-
-    draw: function(coords)
-    {
-        Application.gc.lineTo(coords.x, coords.y);
-        Application.gc.stroke();
     },
 
     configureContext: function()
