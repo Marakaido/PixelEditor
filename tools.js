@@ -243,6 +243,7 @@ var BrushSelection = {
             {
                 Application.ui.gc.closePath();
                 Application.selection.gc.closePath();
+                Application.selection.empty = false;
                 Application.canvasHolder.onmousemove = null;
             }
         }
@@ -251,6 +252,7 @@ var BrushSelection = {
     deactivate: function()
     {
         Application.canvasHolder.onmousedown = null;
+        Application.selection.clear();
     },
 
     configureContext: function()

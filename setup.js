@@ -7,18 +7,31 @@ var Application = {
     selection: {
         canvas: null,
         gc: null,
+        empty: true,
         apply: function(filter)
         {
-            this.gc.save();
-            this.gc.globalCompositeOperation = "source-in";
-            this.gc.drawImage(canvas, 0, 0);
-            this.gc.restore();
-            filter(this.gc, 0, 0, this.canvas.width, this.canvas.height);
-            
-            Application.gc.save();
-            Application.gc.globalCompositeOperation = "destination-over";
-            Application.gc.drawImage(this.canvas, 0, 0);
-            Application.gc.restore();
+            if(this.empty)
+            {
+                filter(Application.gc, 0, 0, Application.canvas.width, Application.canvas.height);
+            }
+            else
+            {
+                this.gc.save();
+                this.gc.globalCompositeOperation = "source-in";
+                this.gc.drawImage(Application.canvas, 0, 0);
+                this.gc.restore();
+                filter(this.gc, 0, 0, this.canvas.width, this.canvas.height);
+                
+                Application.gc.save();
+                Application.gc.drawImage(this.canvas, 0, 0);
+                Application.gc.restore();
+            }
+        },
+        clear: function()
+        {
+            this.gc.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            Application.ui.gc.clearRect(0, 0, Application.ui.canvas.width, Application.ui.canvas.height);
+            this.empty = true;
         }
     },
     ui:{

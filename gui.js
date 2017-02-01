@@ -17,5 +17,10 @@ var GUI = {
         Application.activateTool(tool);
         this.close(this.TOOL_MENU);
         document.getElementById(this.TOOL_MENU_BUTTON).style.backgroundImage = "url('Icons/"+tool.icon+"')";
-    } 
+    },
+    filterButtonClicked: function(filter)
+    {
+        this.close(this.TOOL_MENU);
+        Application.selection.apply(filter);
+    }
 };

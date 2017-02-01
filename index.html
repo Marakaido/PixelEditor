@@ -13,12 +13,12 @@
 <body>
     <div id="canvasHolder">
         <canvas id="mainCanvas" style="width: 100%; height: 100%;"></canvas>
-        <canvas id="uiCanvas" style="width: 100%; height: 100%;"></canvas>
         <canvas id="selectionCanvas" style="width: 100%; height: 100%;"></canvas>
+        <canvas id="uiCanvas" style="width: 100%; height: 100%;"></canvas>
     </div>
 
     <footer class="tool-menu">
-        <div id="toolMenuButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
+        <div id="toolMenuButton" class="toolButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
         <input type="file" onchange="loadFile()" id="fileInput">
         <a id="downloadLink" onclick="downloadImage()">Download</a>
         <button onclick="grayscale()">Greyscale</button>
@@ -50,6 +50,9 @@
                 </div>
             </div>
         </div>
+        <div>
+            <button onclick="GUI.filterButtonClicked(Filters.grayscale)">Grayscale</button>
+        </div>
     </div>
   
 </div>
@@ -58,20 +61,5 @@
     <script src="fileOperations.js"></script>
     <script src="tools.js"></script>
     <script src="gui.js"></script>
-    <script>
-        function grayscale()
-        {
-            Application.imageData = Application.gc.getImageData(0,0,Application.canvas.width, Application.canvas.height);
-            Application.data = Application.imageData.data;
-            for (var i=0; i<data.length; i+=4) 
-            {
-                var r = Application.data[i];
-                var g = Application.data[i+1];
-                var b = Application.data[i+2];
-                var v = 0.2126*r + 0.7152*g + 0.0722*b;
-                Application.data[i] = Application.data[i+1] = Application.data[i+2] = v;
-            }
-            Application.gc.putImageData(Application.imageData, 0, 0);
-        }
-    </script>
+    <script src="filters.js"></script>
 </html> 

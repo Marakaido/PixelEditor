@@ -68,10 +68,7 @@ html body
 
 #toolMenuButton
 {
-    height: 50px;
-    width: 50px;
-    background-color: red;
-    float:left;
+    margin: 0px;
 }
 
 header, footer
