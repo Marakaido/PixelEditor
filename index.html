@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="w3-container w3-top w3-card-8 w3-theme" id="menu">
-        <i class="material-icons w3-xxlarge">menu</i>
-    </header>
-    <canvas id="mainCanvas" width="800" height="600"></canvas>
-    <canvas id="selectionCanvas" width="800" height="600"></canvas>
+    <div id="canvasHolder">
+        <canvas id="mainCanvas" style="width: 100%; height: 100%;"></canvas>
+        <canvas id="uiCanvas" style="width: 100%; height: 100%;"></canvas>
+        <canvas id="selectionCanvas" style="width: 100%; height: 100%;"></canvas>
+    </div>
 
     <footer class="tool-menu">
         <div id="toolMenuButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
@@ -25,13 +25,8 @@
     </footer>
 
     <div id="toolMenu" class="w3-modal">
-        <div class="w3-modal-content w3-card-8">
-            <header class="w3-container w3-blue">
-                <span onclick="document.getElementById('toolMenu').style.display='none'" class="w3-closebtn">&times;</span>
-                <h2>Modal Header</h2>
-            </header>
-
-            <div class="w3-container">
+        <div class="w3-modal-content">
+            <div>
                 <div class="toolButton" onclick="GUI.toolButtonClicked(Pencil)">
                     <img src="Icons/pencil.png" alt="pencil tool">
                 </div>
@@ -49,6 +44,9 @@
                 </div>
                 <div class="toolButton" onclick="GUI.toolButtonClicked(PaintBucket)">
                     <img src="Icons/PaintBucket.png" alt="Paint Bucket tool">
+                </div>
+                <div class="toolButton" onclick="GUI.toolButtonClicked(BrushSelection)">
+                    <img src="Icons/pencil.png" alt="Brush selection tool">
                 </div>
             </div>
         </div>

@@ -1,14 +1,14 @@
 function getPixelCoordinates(x, y)
 {
     return {
-        x: Math.floor((x - Application.canvas.offsetLeft) * Application.zoom.x),
-        y: Math.floor((y - Application.canvas.offsetTop) * Application.zoom.y)
+        x: Math.floor((x - Application.canvasHolder.offsetLeft) * Application.zoom.x),
+        y: Math.floor((y - Application.canvasHolder.offsetTop) * Application.zoom.y)
     };
 }
 
 function brushStroke()
 {
-    Application.canvas.onmousedown = function(event)
+    Application.canvasHolder.onmousedown = function(event)
     {
         var point = getPixelCoordinates(event.clientX, event.clientY);
         Application.gc.beginPath();
@@ -16,16 +16,16 @@ function brushStroke()
         Application.gc.fill();
         Application.gc.beginPath();
         Application.gc.moveTo(point.x, point.y);
-        Application.canvas.onmousemove = function(event)
+        Application.canvasHolder.onmousemove = function(event)
         {
             var coords = getPixelCoordinates(event.clientX, event.clientY);
             Application.gc.lineTo(coords.x, coords.y);
             Application.gc.stroke();
         }
-        Application.canvas.onmouseup = function(event)
+        Application.canvasHolder.onmouseup = function(event)
         {
             Application.gc.closePath();
-            Application.canvas.onmousemove = null;
+            Application.canvasHolder.onmousemove = null;
         }
     }
 }
@@ -39,7 +39,10 @@ var Pencil = {
         brushStroke();
     },
 
-    deactivate: function(){},
+    deactivate: function()
+    {
+        Application.canvasHolder.onmousedown = null;
+    },
 
     configureContext: function()
     {
@@ -62,6 +65,7 @@ var Eraser = {
     deactivate: function()
     {
         Application.gc.globalCompositeOperation = 'source-over';
+        Application.canvasHolder.onmousedown = null;
     },
 
     configureContext: function()
@@ -78,7 +82,7 @@ var ColorPicker = {
 
     activate: function()
     {
-        Application.canvas.onclick = function(event)
+        Application.canvasHolder.onclick = function(event)
         {
             var point = getPixelCoordinates(event.clientX, event.clientY);
             var data = Application.data;
@@ -95,7 +99,7 @@ var Hand = {
 
     activate: function()
     {
-        Application.canvas.onmousedown = function(event)
+        Application.canvasHolder.onmousedown = function(event)
         {
             Hand.correctionValues = {x: event.pageX - Application.canvas.offsetLeft, y: event.pageY - Application.canvas.offsetTop};
             window.onmouseup = function()
@@ -113,7 +117,7 @@ var Hand = {
     },
     deactivate: function()
     {
-        Application.canvas.onmousedown = null;
+        Application.canvasHolder.onmousedown = null;
     },
 };
 
@@ -123,11 +127,11 @@ var Zoom = {
     
     activate: function()
     {
-        Application.canvas.onclick = function(event)
+        Application.canvasHolder.onclick = function(event)
         {
             Zoom.zoom(event.clientX, event.clientY, Zoom.modifier);
         }
-        Application.canvas.oncontextmenu = function(event)
+        Application.canvasHolder.oncontextmenu = function(event)
         {
             event.preventDefault();
             event.stopPropagation();
@@ -137,20 +141,20 @@ var Zoom = {
 
     deactivate: function()
     {
-        Application.canvas.onclick = null;
-        Application.canvas.oncontextmenu = null;
+        Application.canvasHolder.onclick = null;
+        Application.canvasHolder.oncontextmenu = null;
     },
 
     zoom: function(x, y, modifier)
     {
-        var width = Application.canvas.offsetWidth;
-        var height = Application.canvas.offsetHeight;
-        var left = Application.canvas.offsetLeft;
-        var top = Application.canvas.offsetTop;
-        Application.canvas.style.width = width + width * modifier + 'px';
-        Application.canvas.style.height = height + height * modifier + 'px';
-        Application.canvas.style.left = left - x * modifier + 'px';
-        Application.canvas.style.top = top - y * modifier + 'px';
+        var width = Application.canvasHolder.offsetWidth;
+        var height = Application.canvasHolder.offsetHeight;
+        var left = Application.canvasHolder.offsetLeft;
+        var top = Application.canvasHolder.offsetTop;
+        Application.canvasHolder.style.width = width + width * modifier + 'px';
+        Application.canvasHolder.style.height = height + height * modifier + 'px';
+        Application.canvasHolder.style.left = left - x * modifier + 'px';
+        Application.canvasHolder.style.top = top - y * modifier + 'px';
         Application.calculateZoom();
     }
 };
@@ -160,7 +164,7 @@ var PaintBucket = {
     
     activate: function()
     {
-        Application.canvas.onclick = function(event)
+        Application.canvasHolder.onclick = function(event)
         {
             var imageData = Application.getFullImageData();
             var point = getPixelCoordinates(event.clientX, event.clientY);
@@ -201,6 +205,64 @@ var PaintBucket = {
 
     deactivate: function()
     {
-        Application.canvas.onclick = null;
+        Application.canvasHolder.onclick = null;
     },
+};
+
+var BrushSelection = {
+    icon: "pencil.png",
+
+    activate: function()
+    {
+        this.configureContext();
+        Application.canvasHolder.onmousedown = function(event)
+        {
+            var point = getPixelCoordinates(event.clientX, event.clientY);
+            Application.ui.gc.beginPath();
+            Application.ui.gc.arc(point.x, point.y, Application.values.lineWidth/2, 0, 2*Math.PI);
+            Application.ui.gc.fill();
+            Application.ui.gc.beginPath();
+            Application.ui.gc.moveTo(point.x, point.y);
+
+            Application.selection.gc.beginPath();
+            Application.selection.gc.arc(point.x, point.y, Application.values.lineWidth/2, 0, 2*Math.PI);
+            Application.selection.gc.fill();
+            Application.selection.gc.beginPath();
+            Application.selection.gc.moveTo(point.x, point.y);
+
+            Application.canvasHolder.onmousemove = function(event)
+            {
+                var coords = getPixelCoordinates(event.clientX, event.clientY);
+                Application.ui.gc.lineTo(coords.x, coords.y);
+                Application.ui.gc.stroke();
+
+                Application.selection.gc.lineTo(coords.x, coords.y);
+                Application.selection.gc.stroke();
+            }
+            Application.canvasHolder.onmouseup = function(event)
+            {
+                Application.ui.gc.closePath();
+                Application.selection.gc.closePath();
+                Application.canvasHolder.onmousemove = null;
+            }
+        }
+    },
+
+    deactivate: function()
+    {
+        Application.canvasHolder.onmousedown = null;
+    },
+
+    configureContext: function()
+    {
+        Application.ui.gc.lineJoin = 'round';
+        Application.ui.gc.lineCap = 'round';
+        Application.ui.gc.lineWidth = Application.values.lineWidth;
+        Application.ui.gc.strokeStyle = '#ff0000';
+
+        Application.selection.gc.lineJoin = 'round';
+        Application.selection.gc.lineCap = 'round';
+        Application.selection.gc.lineWidth = Application.values.lineWidth;
+        Application.selection.gc.strokeStyle = '#ff0000';
+    }
 };

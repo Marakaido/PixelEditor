@@ -1,9 +1,27 @@
 var Application = {
+    canvasHolder: null,
     canvas: null,
     gc: null, //Graphics context
     imageData: null,
     data: null,
     selection: {
+        canvas: null,
+        gc: null,
+        apply: function(filter)
+        {
+            this.gc.save();
+            this.gc.globalCompositeOperation = "source-in";
+            this.gc.drawImage(canvas, 0, 0);
+            this.gc.restore();
+            filter(this.gc, 0, 0, this.canvas.width, this.canvas.height);
+            
+            Application.gc.save();
+            Application.gc.globalCompositeOperation = "destination-over";
+            Application.gc.drawImage(this.canvas, 0, 0);
+            Application.gc.restore();
+        }
+    },
+    ui:{
         canvas: null,
         gc: null
     },
@@ -18,82 +36,74 @@ var Application = {
     init: function()
     {
         this.initCanvas();
-        this.updateSelectionCanvas();
         this.initContext();
-        this.initSelectionContext();
-        this.imageData = this.gc.getImageData(0, 0, this.canvas.width, this.canvas.height);
-        this.data = this.imageData.data;
         this.calculateZoom();
     },
 
     initCanvas: function(width, height)
     {
+        this.canvasHolder = document.getElementById("canvasHolder");
         this.canvas = document.getElementById("mainCanvas");
+        this.selection.canvas = document.getElementById("selectionCanvas");
+        this.ui.canvas = document.getElementById("uiCanvas");
 
         if(width == null || height == null)
         {
-            height = 0.8 * window.innerHeight;
-            width = 0.8 * window.innerWidth;
+            height = 0.9 * window.innerHeight;
+            width = 0.9 * window.innerWidth;
         }
-        
-        this.canvas.style.height = height + 'px';
-        this.canvas.style.width = width + 'px';
         
         this.canvas.width = width;
         this.canvas.height = height;
+
+        this.selection.canvas.width = this.canvas.width;
+        this.selection.canvas.height = this.canvas.height;
+
+        this.ui.canvas.width = this.canvas.width;
+        this.ui.canvas.height = this.canvas.height;
+
         this.scaleCanvas();
         this.centerCanvas();
     },
 
-    updateSelectionCanvas: function()
-    {
-        this.selection.canvas = document.getElementById("selectionCanvas");
-        this.selection.canvas.width = this.canvas.width;
-        this.selection.canvas.height = this.canvas.height;
-    },
-
     scaleCanvas: function()
     {
-        var maxHeight = Math.round(0.8 * window.innerHeight);
-        var maxWidth = Math.round(0.8 * window.innerWidth);
-        var factor = 1;
-        var width = maxWidth;
-        var height = maxHeight;
-        if(this.canvas.width < this.canvas.height)
+        var maxWidth = window.innerWidth * 0.9;
+        var maxHeight = window.innerHeight * 0.9;
+        var width = this.canvas.width;
+        var height = this.canvas.height;
+        if(width > maxWidth)
         {
-            factor = maxWidth / this.canvas.offsetWidth;
-            height = this.canvas.offsetHeight * factor;
+            height = height * (maxWidth / width);
+            width = maxWidth;
         }
-        else
+        if(height > maxHeight)
         {
-            factor = maxHeight / this.canvas.offsetHeight;
-            width = this.canvas.offsetWidth * factor;
+            width = width * (maxHeight / height);
+            height = maxHeight;
         }
 
-        this.canvas.style.width = width + 'px';
-        this.canvas.style.height = height + 'px';
+        this.canvasHolder.style.width = width + 'px';
+        this.canvasHolder.style.height = height + 'px';
     },
 
     calculateZoom: function()
     {
-        this.zoom.x = this.canvas.width / this.canvas.offsetWidth;
-        this.zoom.y = this.canvas.height / this.canvas.offsetHeight;
+        this.zoom.x = this.canvas.width / this.canvasHolder.offsetWidth;
+        this.zoom.y = this.canvas.height / this.canvasHolder.offsetHeight;
     },
 
     initContext: function()
     {
         this.gc = this.canvas.getContext('2d');
-    },
-    
-    initSelectionContext: function()
-    {
         this.selection.gc = this.selection.canvas.getContext('2d');
+        this.ui.gc = this.ui.canvas.getContext('2d');
     },
 
     centerCanvas: function()
     {
-        this.canvas.style.left = window.innerWidth / 2 - this.canvas.offsetWidth / 2 + 'px';
-        this.canvas.style.top = window.innerHeight / 2 - this.canvas.offsetHeight / 2 + 'px';
+        this.canvasHolder.style.left = window.innerWidth / 2 - this.canvasHolder.offsetWidth / 2 + 'px';
+        this.canvasHolder.style.top = window.innerHeight * 0.01 + 'px';
     },
 
     activateTool: function(tool)

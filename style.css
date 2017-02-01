@@ -1,24 +1,40 @@
 html body
 {
-    background-color: grey;
+    background-color: #6C7A89;
     padding: 0px;
     margin: 0px;
-}
-
-#mainCanvas
-{
-    background-image: url('Icons/background.png');
-    position: fixed;
-    top: 50%;
-    left: 50%;
-
-    height: 600px;
-    width: 800px;
 }
 
 #selectionCanvas
 {
     display: none;
+}
+
+#canvasHolder
+{
+    padding: 0px;
+    margin: 0px;
+
+    background-image: url('Icons/background.png');
+    position: fixed;
+
+    width: 800px;
+    height: 600px;
+}
+
+.canvas
+{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+#uiCanvas
+{
+    position: relative;
+    top: -100%;
+    opacity: 0.3;
 }
 
 .tool-menu
@@ -35,8 +51,19 @@ html body
 
 .toolButton
 {
-    display:inline-block;
-    width: 50px;
+    display:block;
+    float: left;
+    width: 70px;
+    height: 70px;
+    border-radius: 35px;
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    box-shadow: 3px 3px 2px black;
+}
+.toolButton:hover
+{
+    background-color: lightgray;
 }
 
 #toolMenuButton
