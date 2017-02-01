@@ -25,6 +25,8 @@ var Application = {
                 Application.gc.save();
                 Application.gc.drawImage(this.canvas, 0, 0);
                 Application.gc.restore();
+
+                this.clear();
             }
         },
         clear: function()

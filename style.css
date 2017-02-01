@@ -32,8 +32,9 @@ html body
 
 #uiCanvas
 {
-    position: relative;
-    top: -100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
     opacity: 0.3;
 }
 
