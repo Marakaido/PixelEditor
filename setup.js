@@ -46,6 +46,12 @@ var Application = {
     values: {
         lineWidth: 30,
         color: "#000000",
+        setColor: function(picker)
+        {
+            Application.values.color = '#' + picker.toString();
+            Application.gc.strokeStyle = Application.values.color;
+            Application.gc.fillStyle = Application.gc.strokeStyle;
+        }
     },
 
     init: function()

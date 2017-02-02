@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-blue.css"> 
     <link rel="stylesheet" href="style.css">
+
+    <script src="jscolor.js"></script>
 </head>
 <body>
     <div id="canvasHolder">
@@ -21,7 +23,7 @@
         <div id="toolMenuButton" class="toolButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
         <input type="file" onchange="loadFile()" id="fileInput">
         <a id="downloadLink" onclick="downloadImage()">Download</a>
-        <button onclick="grayscale()">Greyscale</button>
+        <button class="jscolor {valueElement:null,value:'000000', onFineChange:'Application.values.setColor(this)'}" id="colorPicker"></button>
     </footer>
 
     <div id="toolMenu" class="w3-modal">
