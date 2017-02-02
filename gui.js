@@ -5,11 +5,13 @@ var GUI = {
     close: function(elementId)
     {
         document.getElementById(elementId).style.display = 'none';
+        document.getElementById('root').className = '';
     },
 
     open: function(elementId)
     {
         document.getElementById(elementId).style.display = 'block';
+        document.getElementById('root').className = 'blur';
     },
 
     toolButtonClicked: function(tool)

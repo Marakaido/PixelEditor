@@ -13,20 +13,21 @@
     <script src="jscolor.js"></script>
 </head>
 <body>
-    <div id="canvasHolder">
-        <canvas id="mainCanvas" style="width: 100%; height: 100%;"></canvas>
-        <canvas id="selectionCanvas" style="width: 100%; height: 100%;"></canvas>
-        <canvas id="uiCanvas" style="width: 100%; height: 100%;"></canvas>
+    <div id="root">
+        <div id="canvasHolder">
+            <canvas id="mainCanvas" style="width: 100%; height: 100%;"></canvas>
+            <canvas id="selectionCanvas" style="width: 100%; height: 100%;"></canvas>
+            <canvas id="uiCanvas" style="width: 100%; height: 100%;"></canvas>
+        </div>
+
+        <footer class="tool-menu">
+            <div id="toolMenuButton" class="toolButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
+            <input type="file" onchange="loadFile()" id="fileInput">
+            <a id="downloadLink" onclick="downloadImage()">Download</a>
+            <button class="jscolor {valueElement:null,value:'000000', onFineChange:'Application.values.setColor(this)'}" id="colorPicker"></button>
+        </footer>
     </div>
-
-    <footer class="tool-menu">
-        <div id="toolMenuButton" class="toolButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
-        <input type="file" onchange="loadFile()" id="fileInput">
-        <a id="downloadLink" onclick="downloadImage()">Download</a>
-        <button class="jscolor {valueElement:null,value:'000000', onFineChange:'Application.values.setColor(this)'}" id="colorPicker"></button>
-    </footer>
-
-    <div id="toolMenu" class="w3-modal">
+    <div id="toolMenu" style="display:none;" class="w3-modal" onclick="GUI.close('toolMenu')">
         <div class="w3-modal-content">
             <div>
                 <div class="toolButton" onclick="GUI.toolButtonClicked(Pencil)">
@@ -57,8 +58,6 @@
             <button onclick="GUI.filterButtonClicked(Filters.negative)">Negative</button>
         </div>
     </div>
-  
-</div>
 </body>
     <script src="setup.js"></script>
     <script src="fileOperations.js"></script>

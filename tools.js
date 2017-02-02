@@ -49,8 +49,6 @@ var Pencil = {
         Application.gc.lineJoin = 'round';
         Application.gc.lineCap = 'round';
         Application.gc.lineWidth = Application.values.lineWidth;
-        alert(Application.values.color);
-        
     }
 };
 

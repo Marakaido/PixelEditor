@@ -33,3 +33,27 @@ Filters.negative = function(context, x, y, width, height)
     }
     context.putImageData(imageData, 0, 0);
 };
+
+Filters.convolute = function(kernel, imageData)
+{
+    var data = imageData.data;
+    var result = new Array();
+    var getRedPosition = function(i, j, imageData)
+    {
+        return imageData.data[j * imageData.width * 4 + i*4];
+    }
+    for(var i = 1; i < imageData.height-1; i++)
+    {
+        for(var j = 1; j < imageData.width-1; j++)
+        {
+            var upperRow = getRedPosition(i-1, j-1);
+            var middleRow = getRedPosition(i-1, j);
+            var middleRow = getRedPosition(i-1, j+1);
+            //var r = data[upperRow];
+            //var g = ;
+            //var b = ;
+            //var a = ;
+            result[pos] = value;
+        }
+    }
+}
