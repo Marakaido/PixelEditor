@@ -12,7 +12,20 @@ var Application = {
         {
             if(this.empty)
             {
-                filter(Application.gc, 0, 0, Application.canvas.width, Application.canvas.height);
+                if (window.Worker) {
+                    var myWorker = new Worker("worker.js");
+                    myWorker.postMessage({filter: null, data: Application.getFullImageData().data, width: Application.canvas.width, height: Application.canvas.height}); // Sending message as an array to the worker
+                    console.log('Message posted to worker');
+
+                    myWorker.onmessage = function(e) 
+                    {
+                        console.log('Message received from worker: ' + e.data.data);
+                        var imgData = new ImageData(new Uint8ClampedArray(e.data.data), e.data.width, e.data.height);
+                        Application.gc.putImageData(imgData, 0, 0);
+                    };
+                }
+                //filter(Application.gc, 0, 0, Application.canvas.width, Application.canvas.height);
+                
             }
             else
             {
