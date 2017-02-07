@@ -59,6 +59,7 @@ var Application = {
         this.initCanvas();
         this.initContext();
         this.calculateZoom();
+        GUI.init();
     },
 
     initCanvas: function(width, height)

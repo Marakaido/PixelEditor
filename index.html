@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-blue.css"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:light">
     <link rel="stylesheet" href="style.css">
 
     <script src="jscolor.js"></script>
@@ -20,50 +20,80 @@
             <canvas id="uiCanvas" style="width: 100%; height: 100%;"></canvas>
         </div>
 
-        <footer class="tool-menu">
-            <div id="toolMenuButton" class="toolButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
-            <input type="file" onchange="loadFile()" id="fileInput">
+        <div class="menu">
+            <div class="toolMenuButtonContainer">
+                <div id="toolMenuButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
+                <div class="loader toolButtonLoader"></div>
+            </div>
+            <!--<input type="file" onchange="loadFile()" id="fileInput">
             <a id="downloadLink" onclick="downloadImage()">Download</a>
             <button class="jscolor {valueElement:null,value:'000000', onFineChange:'Application.values.setColor(this)'}" id="colorPicker"></button>
-        </footer>
-    </div>
-    <div id="toolMenu" style="display:none;" class="w3-modal" onclick="GUI.close('toolMenu')">
-        <div class="w3-modal-content">
-            <div>
-                <div class="toolButton" onclick="GUI.toolButtonClicked(Pencil)">
-                    <img src="Icons/pencil.png" alt="pencil tool">
-                </div>
-                <div class="toolButton" onclick="GUI.toolButtonClicked(Eraser)">
-                    <img src="Icons/Erase-50.png" alt="Eraser tool">
-                </div>
-                <div class="toolButton" onclick="GUI.toolButtonClicked(ColorPicker)">
-                    <img src="Icons/Color_picker.png" alt="Color picker tool">
-                </div>
-                <div class="toolButton" onclick="GUI.toolButtonClicked(Hand)">
-                    <img src="Icons/Hand.png" alt="Hand tool">
-                </div>
-                <div class="toolButton" onclick="GUI.toolButtonClicked(Zoom)">
-                    <img src="Icons/Search.png" alt="Zoom tool">
-                </div>
-                <div class="toolButton" onclick="GUI.toolButtonClicked(PaintBucket)">
-                    <img src="Icons/PaintBucket.png" alt="Paint Bucket tool">
-                </div>
-                <div class="toolButton" onclick="GUI.toolButtonClicked(BrushSelection)">
-                    <img src="Icons/pencil.png" alt="Brush selection tool">
-                </div>
-            </div>
+            -->
         </div>
-        <div>
-            <button onclick="GUI.filterButtonClicked(Filters.grayscale)">Grayscale</button>
-            <button onclick="GUI.filterButtonClicked(Filters.negative)">Negative</button>
-            <button onclick="GUI.filterButtonClicked(Filters.blur)">Blur</button>
-            <button onclick="GUI.filterButtonClicked(Filters.sharpen)">Sharpen</button>
+    </div>
+    <div id="toolMenu" onclick="GUI.close('toolMenu')">
+        <div class="w3-modal-content w3-animate-left">
+            <ul>
+                <li>
+                    <h2>Drawing</h2>
+                    <ul>
+                        <li>
+                            <img  class="toolButton" onclick="GUI.toolButtonClicked(Pencil)" src="Icons/pencil.png" alt="Pencil tool">
+                        </li>
+                        <li>
+                            <img  class="toolButton" onclick="GUI.toolButtonClicked(Eraser)" src="Icons/Erase-50.png" alt="Eraser tool">
+                        </li>
+                        <li>
+                            <img  class="toolButton" onclick="GUI.toolButtonClicked(PaintBucket)" src="Icons/PaintBucket.png" alt="Paint Bucket tool">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <h2>Navigation</h2>
+                    <ul>
+                        <li>
+                            <img  class="toolButton" onclick="GUI.toolButtonClicked(Hand)" src="Icons/Hand.png" alt="Hand tool">
+                        </li>
+                        <li>
+                            <img  class="toolButton" onclick="GUI.toolButtonClicked(Zoom)" src="Icons/Search.png" alt="Zoom tool">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <h2>Selection</h2>
+                    <ul>
+                        <li>
+                            <img  class="toolButton" onclick="GUI.toolButtonClicked(BrushSelection)" src="Icons/pencil.png" alt="Brush selection tool">
+                        </li>
+                        <li>
+                            <img  class="toolButton" onclick="GUI.toolButtonClicked(ColorPicker)" src="Icons/Color_picker.png" alt="Color picker tool">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <h2>Filters</h2>
+                    <ul>
+                        <li>
+                            <button onclick="GUI.filterButtonClicked(Filters.grayscale)">Grayscale</button>
+                        </li>
+                        <li>
+                            <button onclick="GUI.filterButtonClicked(Filters.negative)">Negative</button>
+                        </li>
+                        <li>
+                            <button onclick="GUI.filterButtonClicked(Filters.blur)">Blur</button>
+                        </li>
+                        <li>
+                            <button onclick="GUI.filterButtonClicked(Filters.sharpen)">Sharpen</button>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </body>
+    <script src="gui.js"></script>
     <script src="setup.js"></script>
     <script src="fileOperations.js"></script>
     <script src="tools.js"></script>
-    <script src="gui.js"></script>
     <script src="filters.js"></script>
 </html> 
