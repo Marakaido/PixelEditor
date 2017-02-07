@@ -19,9 +19,10 @@ var Application = {
 
                     myWorker.onmessage = function(e) 
                     {
-                        console.log('Message received from worker: ' + e.data.data);
+                        var time = new Date().getTime();
                         var imgData = new ImageData(new Uint8ClampedArray(e.data.data), e.data.width, e.data.height);
                         Application.gc.putImageData(imgData, 0, 0);
+                        console.log('time: ' + (e.data.time + new Date().getTime() - time));
                     };
                 }
                 //filter(Application.gc, 0, 0, Application.canvas.width, Application.canvas.height);
