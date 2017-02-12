@@ -31,12 +31,14 @@
             -->
             <div hidden id="user-pic" style='width: 50px; height: 50px; background-size: cover;'></div>
             <div hidden id="user-name"></div>
-            <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+            <button hidden id="sign-out" onclick="Application.signOut()" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
             Sign-out
             </button>
             <button onclick="Application.signIn()" id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
             <i class="material-icons">account_circle</i>Sign-in with Google
             </button>
+            <button onclick="Application.upload()">Upload</button>
+            <button onclick="Application.load()">Load</button>
         </div>
     </div>
     <div id="toolMenu" onclick="GUI.close('toolMenu')">

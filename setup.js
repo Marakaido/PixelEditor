@@ -208,9 +208,6 @@ var Application = {
 
             // Hide sign-in button.
             this.signInButton.setAttribute('hidden', 'true');
-
-            // We load currently existing chant messages.
-            this.loadMessages();
         } 
         else 
         { // User is signed out!
@@ -247,7 +244,45 @@ var Application = {
         };
         this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
         return false;
+    },
+
+    upload: function()
+    {
+        this.canvas.toBlob(function(blob){
+            var uid = Application.auth.currentUser.uid;
+            var ref = Application.storage.ref().child(uid + "/image.png");
+            ref.put(blob).then(function(snapshot) {
+                console.log('Uploaded an array!');
+            })
+        });
+    },
+
+    load: function()
+    {
+        var uid = Application.auth.currentUser.uid;
+        var ref = Application.storage.ref().child(uid + "/image.png");
+
+        ref.getDownloadURL().then(function(url) {
+            var xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob';
+            xhr.onload = function(event) {
+                var blob = xhr.response;
+                var img = new Image();
+                img.onload = function()
+                {
+                    console.log("Image loaded");
+                    Application.gc.drawImage(img, 0, 0);
+                }
+                img.src = URL.createObjectURL(blob);
+            };
+            xhr.open('GET', url);
+            xhr.send();
+        }).catch(function(error) {
+            console.error(error);
+        });
     }
+
+
 };
 
 window.onload = Application.init();
