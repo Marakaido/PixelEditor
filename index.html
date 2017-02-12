@@ -29,6 +29,14 @@
             <a id="downloadLink" onclick="downloadImage()">Download</a>
             <button class="jscolor {valueElement:null,value:'000000', onFineChange:'Application.values.setColor(this)'}" id="colorPicker"></button>
             -->
+            <div hidden id="user-pic" style='width: 50px; height: 50px; background-size: cover;'></div>
+            <div hidden id="user-name"></div>
+            <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+            Sign-out
+            </button>
+            <button onclick="Application.signIn()" id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+            <i class="material-icons">account_circle</i>Sign-in with Google
+            </button>
         </div>
     </div>
     <div id="toolMenu" onclick="GUI.close('toolMenu')">
@@ -91,6 +99,9 @@
         </div>
     </div>
 </body>
+
+    <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+    <script src="firebase.js"></script>
     <script src="gui.js"></script>
     <script src="setup.js"></script>
     <script src="fileOperations.js"></script>
