@@ -87,6 +87,64 @@ function computeMaxIntesities(data)
     return result;
 }
 
+Filters.histogramEqualization = function(context, x, y, width, height) 
+{
+    var imageData = context.getImageData(x, y, width, height);
+    var data = imageData.data;
+    var histograms = computeHistograms(data, width, height);
+    var newHistograms = [
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0)
+    ];
+    alert(histograms[2][255]);
+    try
+    {
+        for (var i = 0; i<3; i++) 
+        {
+            for(var j = 0; j < 256; j++)
+            {
+                var sum = 0;
+                for(var k = 0; k <= j; k++)
+                {
+                    sum += histograms[i][k];
+                }
+                newHistograms[i][j] = Math.round((254/(width*height)) * sum);
+            }
+        }
+    }
+    catch(e){alert(e)}
+    applyHistograms(newHistograms, data);
+    alert("finished");
+    context.putImageData(imageData, 0, 0);
+};
+
+function computeHistograms(data, width, height)
+{
+    var result = [
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0)
+    ];
+    for (var i=0; i<data.length; i+=4) 
+    {
+        result[0][data[i]] += 1;
+        result[1][data[i+1]] += 1;
+        result[2][data[i+2]] += 1;
+    }
+    return result;
+}
+
+function applyHistograms(histograms, data)
+{
+    for(var i=0; i < data.length; i+=4)
+    {
+        data[i] = histograms[0][data[i]];
+        data[i+1] = histograms[1][data[i+1]];
+        data[i+2] = histograms[2][data[i+2]];
+    }
+}
+
 //Updates imageData object to contain convoluted result of its previous content with kernel matrix
 //kernel - one-dimensional array representing 3x3 matrix
 Filters.convolute = function(imageData, kernel)
