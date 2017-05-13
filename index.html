@@ -5,7 +5,7 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="<st></st>ylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:light">
     <link rel="stylesheet" href="style.css">
@@ -25,10 +25,9 @@
                 <div id="toolMenuButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
                 <div class="loader toolButtonLoader"></div>
             </div>
-            <!--<input type="file" onchange="loadFile()" id="fileInput">
+            <input type="file" onchange="loadFile()" id="fileInput">
             <a id="downloadLink" onclick="downloadImage()">Download</a>
             <button class="jscolor {valueElement:null,value:'000000', onFineChange:'Application.values.setColor(this)'}" id="colorPicker"></button>
-            -->
             <div hidden id="user-pic" style='width: 50px; height: 50px; background-size: cover;'></div>
             <div hidden id="user-name"></div>
             <button hidden id="sign-out" onclick="Application.signOut()" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
@@ -94,6 +93,9 @@
                         </li>
                         <li>
                             <button onclick="GUI.filterButtonClicked(Filters.sharpen)">Sharpen</button>
+                        </li>
+                        <li>
+                            <button onclick="GUI.filterButtonClicked(Filters.logarithm)">Logarithm transformation</button>
                         </li>
                     </ul>
                 </li>

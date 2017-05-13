@@ -34,6 +34,38 @@ Filters.negative = function(context, x, y, width, height)
     context.putImageData(imageData, 0, 0);
 };
 
+Filters.logarithm = function(context, x, y, width, height, c) 
+{
+    var imageData = context.getImageData(x, y, width, height);
+    var data = imageData.data;
+    var maxIntensities = computeMaxIntesities(data);
+    var cr = Math.floor(255 / Math.log(1 + maxIntensities[0]));
+    var cg = Math.floor(255 / Math.log(1 + maxIntensities[1]));
+    var cb = Math.floor(255 / Math.log(1 + maxIntensities[2]));
+    for (var i=0; i<data.length; i+=4) 
+    {
+        var r = data[i];
+        var g = data[i+1];
+        var b = data[i+2];
+        data[i] = Math.floor(cr * Math.log(1 + r));
+        data[i+1] = Math.floor(cg * Math.log(1 + g));
+        data[i+2] = Math.floor(cb * Math.log(1 + b));
+    }
+    context.putImageData(imageData, 0, 0);
+};
+
+function computeMaxIntesities(data)
+{
+    var result = [0, 0, 0];
+    for (var i=0; i<data.length; i+=4) 
+    {
+        if(data[i] > result[0]) result[0] = data[i];
+        if(data[i+1] > result[1]) result[1] = data[i+1];
+        if(data[i+2] > result[2]) result[2] = data[i+2];
+    }
+    return result;
+}
+
 //Updates imageData object to contain convoluted result of its previous content with kernel matrix
 //kernel - one-dimensional array representing 3x3 matrix
 Filters.convolute = function(imageData, kernel)

@@ -109,8 +109,8 @@ var Hand = {
 
             window.onmousemove = function(event)
             {
-                Application.canvas.style.top = event.pageY - Hand.correctionValues.y + 'px';
-                Application.canvas.style.left = event.pageX - Hand.correctionValues.x + 'px';
+                Application.canvasHolder.style.top = event.pageY - Hand.correctionValues.y + 'px';
+                Application.canvasHolder.style.left = event.pageX - Hand.correctionValues.x + 'px';
             }
         }
     },
