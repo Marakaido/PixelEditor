@@ -97,25 +97,19 @@ Filters.histogramEqualization = function(context, x, y, width, height)
         Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
         Array.apply(null, Array(256)).map(Number.prototype.valueOf,0)
     ];
-    alert(histograms[2][255]);
-    try
+    for (var i = 0; i<3; i++) 
     {
-        for (var i = 0; i<3; i++) 
+        for(var j = 0; j < 256; j++)
         {
-            for(var j = 0; j < 256; j++)
+            var sum = 0;
+            for(var k = 0; k <= j; k++)
             {
-                var sum = 0;
-                for(var k = 0; k <= j; k++)
-                {
-                    sum += histograms[i][k];
-                }
-                newHistograms[i][j] = Math.round((254/(width*height)) * sum);
+                sum += histograms[i][k];
             }
+            newHistograms[i][j] = Math.round((254/(width*height)) * sum);
         }
     }
-    catch(e){alert(e)}
     applyHistograms(newHistograms, data);
-    alert("finished");
     context.putImageData(imageData, 0, 0);
 };
 
