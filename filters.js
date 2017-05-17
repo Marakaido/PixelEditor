@@ -234,9 +234,16 @@ Filters.convolute = function(imageData, kernel)
         }
     }
 
-    for(var i = 0; i < data.length; i++)
+    for(var i = 1; i < imageData.height-1; i++)
     {
-        data[i] = result[i];
+        for(var j = 1; j < imageData.width-1; j++)
+        {
+            var index = (i * imageData.width + j) * 4;
+            data[index] = result[index];
+            data[index+1] = result[index+1];
+            data[index+2] = result[index+2];
+            data[index+3] = result[index+3];
+        }
     }
 }
 

@@ -28,6 +28,7 @@ var GUI = {
         this.close(this.TOOL_MENU);
         document.getElementById(this.TOOL_MENU_BUTTON).src = "Icons/"+tool.icon;
     },
+
     filterButtonClicked: function(filter)
     {
         this.close(this.TOOL_MENU);
