@@ -92,27 +92,47 @@ Filters.histogramEqualization = function(context, x, y, width, height)
     var imageData = context.getImageData(x, y, width, height);
     var data = imageData.data;
     var histograms = computeHistograms(data, width, height);
-    var newHistograms = [
-        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
-        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
-        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0)
-    ];
-    for (var i = 0; i<3; i++) 
-    {
-        for(var j = 0; j < 256; j++)
-        {
-            var sum = 0;
-            for(var k = 0; k <= j; k++)
-            {
-                sum += histograms[i][k];
-            }
-            newHistograms[i][j] = Math.round((254/(width*height)) * sum);
-        }
-    }
-    applyHistograms(newHistograms, data);
+    var pdfs = computePDFValues(histograms, width, height);
+    applyPDFs(pdfs, data);
     context.putImageData(imageData, 0, 0);
 };
 
+Filters.histogramSpecification = function(context, x, y, width, height) 
+{
+    var imageData = context.getImageData(x, y, width, height);
+    var data = imageData.data;
+    var histograms = computeHistograms(data, width, height);
+    var targetHistograms = [
+        histograms[0].slice(),
+        histograms[1].slice(),
+        histograms[2].slice()
+    ];
+    
+    //Perform equalization
+    var s_pdfs = computePDFValues(histograms, width, height);
+
+    //Compute all G values
+    var z_pdfs = computePDFValues(targetHistograms, width, height);
+    
+    //Compute resulting values
+    for(var i = 0; i < 3; i++)
+    {
+        for(var j = 0; j < 256; j++)
+        {
+            histograms[i][j] = findIndexOfNearestValue(s_pdfs[i][j], z_pdfs[i]);
+        }
+    }
+
+    applyPDFs(histograms, data);
+    context.putImageData(imageData, 0, 0);
+};
+
+/*
+Returns arrays, containing number of pixels of intensity for i at i-th index.
+First array - histogram for red color
+Second array - histogram for green color
+Third array - histogram for blue color
+*/
 function computeHistograms(data, width, height)
 {
     var result = [
@@ -129,7 +149,34 @@ function computeHistograms(data, width, height)
     return result;
 }
 
-function applyHistograms(histograms, data)
+/*
+Returns values of PDF function based on histograms specified
+Parameter histograms - a 2D array containing 3 histograms for red, green and blue colors respectively
+Parameters width, height - width and height of the image
+*/
+function computePDFValues(histograms, width, height)
+{
+    var result = [
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0), 
+        Array.apply(null, Array(256)).map(Number.prototype.valueOf,0)
+    ];
+    for (var i = 0; i<3; i++) 
+    {
+        var sum = 0;
+        for(var j = 0; j < 256; j++)
+        {
+            sum += histograms[i][j];
+            result[i][j] = Math.round((254/(width*height)) * sum);
+        }
+    }
+    return result;
+}
+
+/*
+Sets intensities of pixels in data according to the histograms
+*/
+function applyPDFs(histograms, data)
 {
     for(var i=0; i < data.length; i+=4)
     {
@@ -139,17 +186,34 @@ function applyHistograms(histograms, data)
     }
 }
 
+function findIndexOfNearestValue(value, Gvalues)
+{
+    var result = 0;
+    var diff = Math.abs(value - Gvalues[0]);
+    for(var i = 1; i < 256; i++)
+    {
+        var newDiff = Math.abs(value - Gvalues[i]);
+        if(newDiff < diff)
+        {
+            result = i;
+            diff = newDiff;
+            if(newDiff == 0) return result;
+        }
+    }
+    return result;
+}
+
 //Updates imageData object to contain convoluted result of its previous content with kernel matrix
 //kernel - one-dimensional array representing 3x3 matrix
 Filters.convolute = function(imageData, kernel)
 {
     var data = imageData.data;
-    var result = new Array();
+    var result = new Array(imageData.width*imageData.height);
     for(var i = 1; i < imageData.height-1; i++)
     {
         for(var j = 1; j < imageData.width-1; j++)
         {
-            var r = g = b = a = 0;
+            var r = 0; var g = 0; var b = 0;
             for(var k = 0; k < 3; k++)
             {
                 for(var l = 0; l < 3; l++)
@@ -159,7 +223,6 @@ Filters.convolute = function(imageData, kernel)
                     r += kernelMultiplier * data[dataRedPosition];
                     g += kernelMultiplier * data[dataRedPosition + 1];
                     b += kernelMultiplier * data[dataRedPosition + 2];
-                    a += kernelMultiplier * data[dataRedPosition + 3];
                 }
             }
 
@@ -167,7 +230,7 @@ Filters.convolute = function(imageData, kernel)
             result[resultRedPosition] = r;
             result[resultRedPosition + 1] = g;
             result[resultRedPosition + 2] = b;
-            result[resultRedPosition + 3] = a;
+            result[resultRedPosition + 3] = 255;
         }
     }
 
