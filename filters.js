@@ -257,3 +257,17 @@ Filters.sharpen = function(context, x, y, width, height)
                                                             0, -1, 0]);
     context.putImageData(imageData, 0, 0);                                  
 };
+
+Filters.bitplaneSlicing = function(context, x, y, width, height) 
+{
+    var imageData = context.getImageData(x, y, width, height);
+    var data = imageData.data;
+    var mask = 9932123;
+    for (var i=0; i<data.length; i+=4) 
+    {
+        data[i] &= mask;
+        data[i+1] &= mask;
+        data[i+2] &= mask;
+    }
+    context.putImageData(imageData, 0, 0);
+};
