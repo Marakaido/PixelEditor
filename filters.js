@@ -278,3 +278,28 @@ Filters.bitplaneSlicing = function(context, x, y, width, height)
     }
     context.putImageData(imageData, 0, 0);
 };
+
+Filters.linearFunction = function(context, x, y, width, height) 
+{
+    var imageData = context.getImageData(x, y, width, height);
+    var data = imageData.data;
+    var f = {
+        points: [0, 50, 100, 200, 255],
+        values: [255, 255, 0, 0],
+        apply: function(x)
+        {
+            for(var i = 0; i < this.points.length-1; i++)
+            {
+                if(this.points[i] < x && x <= this.points[i+1]) 
+                    return this.values[i];
+            }
+        }
+    };
+    for (var i=0; i<data.length; i+=4) 
+    {
+        data[i] = f.apply(data[i]);
+        data[i+1] = f.apply(data[i+1]);
+        data[i+2] = f.apply(data[i+2]);
+    }
+    context.putImageData(imageData, 0, 0);
+};
