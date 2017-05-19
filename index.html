@@ -25,17 +25,15 @@
                 <div id="toolMenuButton" onclick="GUI.open(GUI.TOOL_MENU)"></div>
                 <div class="loader toolButtonLoader"></div>
             </div>
-            <input type="file" onchange="loadFile()" id="fileInput">
-            <a id="downloadLink" onclick="downloadImage()">Download</a>
-            <button class="jscolor {valueElement:null,value:'000000', onFineChange:'Application.values.setColor(this)'}" id="colorPicker"></button>
+            <input type="file" onchange="loadFile()" id="fileInput" value="Open">
+            <button onclick="document.getElementById('fileInput').click()">Open</button>
+            <a id="downloadLink" style="display: none;" onclick="downloadImage()">Save</a>
+            <button onclick="document.getElementById('downloadLink').click()">Save</button>
+            <button style="position: absolute; bottom: 0px; right: 0px;" class="jscolor {valueElement:null,value:'000000', onFineChange:'Application.values.setColor(this)'}" id="colorPicker"></button>
             <div hidden id="user-pic" style='width: 50px; height: 50px; background-size: cover;'></div>
             <div hidden id="user-name"></div>
-            <button hidden id="sign-out" onclick="Application.signOut()" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-            Sign-out
-            </button>
-            <button onclick="Application.signIn()" id="sign-in">
-                <i class="material-icons">account_circle</i>Sign-in with Google
-            </button>
+            <button onclick="Application.signIn()" id="sign-in">Sign in</button>
+            <button hidden id="sign-out" onclick="Application.signOut()" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">Sign-out</button>
             <button onclick="Application.upload()">Upload</button>
             <button onclick="Application.load()">Load</button>
         </div>
