@@ -32,6 +32,6 @@ var GUI = {
     filterButtonClicked: function(filter)
     {
         this.close(this.TOOL_MENU);
-        Application.selection.apply(filter);
+        Application.selection.apply(filter.action);
     }
 };
