@@ -112,13 +112,13 @@ Filters.histogramEqualization = {
 
 Filters.histogramSpecification = {
     inputId: "histogramSpecificationInput",
+    targetImageData: null,
     action: function(context, x, y, width, height) 
     {
         var imageData = context.getImageData(x, y, width, height);
         var data = imageData.data;
         var histograms = computeHistograms(data, width, height);
-        var targetImageData = null;
-        var targetHistograms = computeHistograms(targetImageData.data, targetImageData.width, targetImageData.height);
+        var targetHistograms = computeHistograms(this.targetImageData.data, this.targetImageData.width, this.targetImageData.height);
         
         //Perform equalization
         var s_pdfs = computePDFValues(histograms, width, height);

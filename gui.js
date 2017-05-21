@@ -52,5 +52,34 @@ var GUI = {
     onParameterSubmit: function()
     {
         Application.selection.apply(Application.activeTool);
+    },
+
+    histogramSpecificationClicked: function()
+    {
+        Application.activeTool = Filters.histogramSpecification;
+        var reader = new FileReader();
+        reader.onload = function(event)
+        {
+            var img = new Image();
+            img.onload = function(){
+                var canvas = document.getElementById("hiddenCanvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var gc = canvas.getContext("2d");
+                gc.drawImage(img,0,0);
+                Filters.histogramSpecification.targetImageData = gc.getImageData(0,0,img.width, img.height);
+                Application.selection.apply(Filters.histogramSpecification);
+            }
+            img.src = event.target.result;
+        }
+        var btn = document.getElementById("histogramSpecificationFileInput");
+        btn.onchange = function ()
+        {
+            var file = btn.files[0];
+            reader.readAsDataURL(file);
+        }
+        btn.click();
+        
+        
     }
 };
