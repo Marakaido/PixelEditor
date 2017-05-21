@@ -259,6 +259,20 @@ header *, footer *
     filter: blur(12px);
 }
 
+#inputFields
+{
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+
+    background-color: #5b5b5b;
+    border: 1px solid #3498db;
+    opacity: 0.9;
+    border-radius: 3px;
+
+    padding: 10px;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

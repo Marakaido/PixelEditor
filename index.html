@@ -37,7 +37,47 @@
             <button onclick="Application.upload()">Upload</button>
             <button onclick="Application.load()">Load</button>
         </div>
+
+        <div id="inputFields" style="display: none;">
+            <div id="blurInput" style="display: none;">
+                Intensity: <br />
+                <input id="blurIntensityInput" type="range" min="1" max="5" default-value="1" />
+            </div>
+            
+            <div id="sharpenInput" style="display: none;">
+                Intensity: <br />
+                <input id="sharpenIntensityInput" type="range" min="1" max="5" default-value="1" />
+            </div>
+
+            <div id="logarithmInput" style="display: none;">
+                Coeficient: <br />
+                <input id="logarithmCoeficientInput" />
+            </div>
+
+            <div id="gammaInput" style="display: none;">
+                Coeficient: <br />
+                <input id="gammaCoeficientInput" />
+            </div>
+
+            <div id="bitplaneSlicingInput" style="display: none;">
+                Mask: <br />
+                <input id="bitplaneSlicingMaskInput" />
+            </div>
+
+            <div id="histogramSpecificationInput"  style="display: none;">
+                Image: <br />
+                <input type="file" id="histogramSpecificationFileInput" value="Browse">
+            </div>
+
+            <div id="linearFunctionInput" style="display: none;">
+                Ranges ([a, b] = intensity, ...): <br />
+                <input id="linearFunctionFunctionInput" />
+            </div>
+            
+            <br /><input type="submit" onclick="GUI.onParameterSubmit();" />
+        </div>
     </div>
+
     <div id="toolMenu" onclick="GUI.close('toolMenu')">
         <div class="w3-modal-content w3-animate-left">
             <ul>

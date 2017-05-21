@@ -1,6 +1,7 @@
 var GUI = {
     TOOL_MENU: "toolMenu",
     TOOL_MENU_BUTTON: "toolMenuButton",
+    INPUT_FIELDS: "inputFields",
 
     init: function()
     {
@@ -32,6 +33,24 @@ var GUI = {
     filterButtonClicked: function(filter)
     {
         this.close(this.TOOL_MENU);
-        Application.selection.apply(filter.action);
+        
+        if(filter.inputId != null) 
+        {
+            this.open(this.INPUT_FIELDS);
+            if(Application.activeTool != null && Application.activeTool.inputId != null)
+                this.close(Application.activeTool.inputId);
+            this.open(filter.inputId);
+        }
+        else 
+        {
+            this.close(this.INPUT_FIELDS);
+            Application.selection.apply(filter);
+        }
+        Application.activeTool = filter;
+    },
+
+    onParameterSubmit: function()
+    {
+        Application.selection.apply(Application.activeTool);
     }
 };

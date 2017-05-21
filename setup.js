@@ -12,7 +12,7 @@ var Application = {
         {
             if(this.empty)
             {
-                filter(Application.gc, 0, 0, Application.canvas.width, Application.canvas.height);
+                filter.action(Application.gc, 0, 0, Application.canvas.width, Application.canvas.height);
             }
             else
             {
@@ -20,7 +20,7 @@ var Application = {
                 this.gc.globalCompositeOperation = "source-in";
                 this.gc.drawImage(Application.canvas, 0, 0);
                 this.gc.restore();
-                filter(this.gc, 0, 0, this.canvas.width, this.canvas.height);
+                filter.action(this.gc, 0, 0, this.canvas.width, this.canvas.height);
                 
                 Application.gc.save();
                 Application.gc.drawImage(this.canvas, 0, 0);
